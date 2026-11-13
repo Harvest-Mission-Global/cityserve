@@ -9,6 +9,8 @@ You are done only when **all** of these are true. Do them in order.
 
 ## 1. Run the automatic checks
 
+If `yarn verify` says the command or script does not exist, you are on a branch without the harness. **Stop.** Do not replace it with `yarn build` alone. Tell the human which branch you are on and ask which branch to start from.
+
 ```bash
 yarn verify
 ```

@@ -34,7 +34,8 @@ Components read it with `translations[language].joinUs.title`.
 
 2. If it is in `Translation.js`, change the value in `en` **and** the matching value in `zh`.
 3. If it is typed directly in a component (for example a partner name), change it there. Keep it in the same place.
-4. Change only the words you were asked to change. Keep the capital letters, spacing, and punctuation style of the text around it.
+4. Match the capital letters of the texts next to it. For example, all recap card labels are in CAPITALS (`PARTICIPANTS`, `CHURCHES`), so a new label is too. If the issue spells it differently, use the issue's spelling and say so under **Needs a human**.
+5. Change only the words you were asked to change. Keep the capital letters, spacing, and punctuation style of the text around it.
 
 ## B. Add new text
 
@@ -58,6 +59,7 @@ Components read it with `translations[language].joinUs.title`.
 ## Chinese rules
 
 - Use **Traditional Chinese as written in Hong Kong (繁體中文)**. Never Simplified: `該` not `该`, `關閉` not `关闭`, `會` not `会`, `參與` not `参与`.
+- Use Hong Kong words, not mainland ones: `夥伴` not `伙伴`, `影片` not `視頻`, `資訊` not `信息`. `yarn check:content` warns about these; fix them in the text you are editing.
 - If the human or the issue gives you the Chinese text, copy it exactly.
 - If you must translate yourself, keep the meaning, not word-for-word English. Keep `CityServe` in English.
 - If you are not sure your Chinese is right, still add it, then write the key under **Needs a human** in your report and PR.

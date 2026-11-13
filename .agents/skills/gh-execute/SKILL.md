@@ -30,13 +30,14 @@ _No response_
 
 - Use every answer **exactly as written**: links, numbers, names, and Chinese text.
 - `_No response_` means the field is empty. If the task needs that field (for example the Chinese text, or a form link), stop and ask in an issue comment. Do not invent it.
+- If the request is only inside an attachment (a PDF or an image) and you cannot read it, stop and ask the human to paste the text into the issue, or to use an issue form. If you can read it, copy every change into your checklist first, then compare your diff with it at the end.
 - An image in the issue (logo, screenshot) is a link like `https://github.com/user-attachments/...`. Ask the human to add a logo to `public/images/` if you cannot download it.
 
 ## Before the first task
 
 1. Read `AGENTS.md` and follow its "Do this BEFORE" steps for the kind of work in the issue.
 2. Make sure there are no uncommitted changes: `git status`. If there are, stop and ask.
-3. Create the branch from `development` (see `.agents/docs/git-workflow.md`):
+3. Create the branch from `development`, or from the branch the human names (see `.agents/docs/git-workflow.md`). Check that `scripts/verify.mjs` exists on it:
 
    ```bash
    git switch development
