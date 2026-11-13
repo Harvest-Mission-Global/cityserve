@@ -25,7 +25,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
+    "lint": "eslint src --max-warnings=0",
+    "check:content": "node scripts/check-content.mjs",
+    "verify": "node scripts/verify.mjs",
+    "prepare": "node scripts/install-hooks.mjs",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
