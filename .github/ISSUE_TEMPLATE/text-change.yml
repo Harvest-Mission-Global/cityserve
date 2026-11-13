@@ -1,0 +1,44 @@
+name: Text change
+description: Change, add, or fix words on the site, in English and Chinese.
+title: "[Text] "
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: section
+    attributes:
+      label: Where on the page
+      options:
+        - Header (top bar)
+        - About (first section)
+        - Social needs
+        - Join us
+        - Recap
+        - How to take part
+        - Partners
+        - Footer
+        - Other (say where below)
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current text
+      description: Copy the words as they are on the site now, so the change goes in the right place.
+    validations:
+      required: true
+  - type: textarea
+    id: new-en
+    attributes:
+      label: New text (English)
+    validations:
+      required: true
+  - type: textarea
+    id: new-zh
+    attributes:
+      label: New text (繁體中文)
+      description: Traditional Chinese for Hong Kong. Leave empty only if you want the agent to translate; a Chinese reader must then check it before merge.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: A screenshot helps.

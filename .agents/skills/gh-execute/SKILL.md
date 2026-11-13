@@ -14,6 +14,24 @@ You need **one** of these. If you have neither, ask for it.
 
 If the issue has no checklist, write a short checklist in your reply first (3–7 steps), and ask the human to confirm it before you start.
 
+### Issues made from a template
+
+Most issues use a form from `.github/ISSUE_TEMPLATE/` (titles start with `[Event]`, `[Text]`, `[Partner]`, or `[Bug]`). Each answer sits under a `### <field name>` heading:
+
+```
+### Event dates (English)
+
+MARCH 19-21, 2027
+
+### Event dates (繁體中文)
+
+_No response_
+```
+
+- Use every answer **exactly as written**: links, numbers, names, and Chinese text.
+- `_No response_` means the field is empty. If the task needs that field (for example the Chinese text, or a form link), stop and ask in an issue comment. Do not invent it.
+- An image in the issue (logo, screenshot) is a link like `https://github.com/user-attachments/...`. Ask the human to add a logo to `public/images/` if you cannot download it.
+
 ## Before the first task
 
 1. Read `AGENTS.md` and follow its "Do this BEFORE" steps for the kind of work in the issue.
