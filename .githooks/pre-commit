@@ -1,0 +1,19 @@
+#!/bin/sh
+# Installed by `yarn install` (scripts/install-hooks.mjs). Fast checks only; `yarn verify` runs the full set.
+
+export BROWSERSLIST_IGNORE_OLD_DATA=true
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$branch" = "main" ] || [ "$branch" = "development" ]; then
+  echo "pre-commit: do not commit on '$branch'. Create a branch first: git switch -c <issue#>-<short-description>"
+  exit 1
+fi
+
+yarn -s lint || {
+  echo "pre-commit: ESLint failed. Fix the errors above, then commit again."
+  exit 1
+}
+
+node scripts/check-content.mjs || {
+  echo "pre-commit: content check failed. Fix the problems above, then commit again."
+  exit 1
+}

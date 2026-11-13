@@ -61,7 +61,7 @@ const Header = ({ recapRef, joinusRef }) => {
             <Text fontSize="1rem">{translations[language].header.recap}</Text>
           </Link>
           <Link onClick={scrollToParticipate}>
-            <Text fontSize="1rem" S>
+            <Text fontSize="1rem">
               {translations[language].header.participate}
             </Text>
           </Link>
