@@ -39,7 +39,7 @@ After three failed tries, stop and report the full error to the human.
 yarn screenshots
 ```
 
-It builds the site and opens it in a hidden Chrome at desktop (1440px) and mobile (390px) width, in English and 繁. It checks the page **in code** and prints only text:
+It builds the site and opens it in a hidden Chrome at desktop (1440px), mobile (390px), and narrow phone (320px) width, in English and 繁. It checks the page **in code** and prints only text:
 
 | Problem it finds | Example line |
 | --- | --- |
@@ -49,8 +49,14 @@ It builds the site and opens it in a hidden Chrome at desktop (1440px) and mobil
 | Text cut off or spilling out of its box | `text does not fit its box: <p> "..."` |
 | Image that did not load | `image did not load: <img> "..."` |
 | Buttons or links on top of each other | `buttons or links overlap: <a> "..." and <button> "..."` |
+| Text hard to read on its background | `text colour too close to its background (contrast 2.1:1, needs 4.5:1): <p> "..."` |
+| Image without `alt` | `image has no alt text: <img> "/images/logo.png"` |
+| Button or link without a name (for example an icon only) | `button or link has no name for screen readers: <button ...>` |
+| Button or link too small to tap on a phone | `button or link too small to tap (58x11px, needs 24x24): <a> "..."` |
 
-The last line must be `screenshots: PASSED`. If not, fix the first problem and run it again. The text in quotes tells you which element to search for: `rg -n "<that text>" src`.
+The site already had some of these problems before the harness existed. They are listed in `scripts/page-check-baseline.json`, and the script tells you to ignore them. **You fail only for new problems.** Never edit the baseline file or run `--update-baseline`; only a human does that, after fixing old problems on purpose.
+
+The last line must be `screenshots: PASSED`. If not, fix the first new problem and run it again. The text in quotes tells you which element to search for: `rg -n "<that text>" src`.
 
 **The text result is the required check.** The script also saves PNG files you **may** open to check your work yourself. This is optional: a human checks the final screenshots on the PR anyway (CI attaches them).
 

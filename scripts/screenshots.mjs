@@ -1,7 +1,15 @@
 #!/usr/bin/env node
 // Visual check for agents without a browser: yarn screenshots [--no-build]
 import { spawnSync } from "node:child_process";
-import { createReadStream, existsSync, mkdirSync, rmSync, statSync } from "node:fs";
+import {
+  createReadStream,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, normalize } from "node:path";
 import { chromium } from "playwright";
@@ -9,9 +17,11 @@ import { chromium } from "playwright";
 const BUILD_DIR = join(process.cwd(), "build");
 const OUT_DIR = join(process.cwd(), "screenshots");
 const PARTS_DIR = join(OUT_DIR, "parts");
+const BASELINE_FILE = join(process.cwd(), "scripts", "page-check-baseline.json");
 const VIEWPORTS = [
-  { name: "desktop", width: 1440, height: 900 },
-  { name: "mobile", width: 390, height: 844 },
+  { name: "desktop", width: 1440, height: 900, saveImages: true },
+  { name: "mobile", width: 390, height: 844, saveImages: true, checkTapTargets: true },
+  { name: "narrow", width: 320, height: 640, saveImages: false, checkTapTargets: true },
 ];
 const LANGUAGES = [
   { name: "en", toggle: "EN" },
@@ -143,6 +153,96 @@ const findLayoutProblems = (page) =>
     return problems;
   });
 
+const findAccessibilityProblems = (page, checkTapTargets) =>
+  page.evaluate((checkTapTargets) => {
+    const isShown = (element) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.opacity !== "0";
+    };
+    const describe = (element) => {
+      const text = (element.textContent || element.getAttribute("alt") || element.getAttribute("src") || "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .slice(0, 40);
+      return `<${element.tagName.toLowerCase()}>${text ? ` "${text}"` : ""}`;
+    };
+    const parseColor = (value) => {
+      const [r, g, b, a = 1] = (value.match(/[\d.]+/g) ?? []).map(Number);
+      return { r, g, b, a };
+    };
+    const luminance = ({ r, g, b }) => {
+      const channel = (c) => {
+        const s = c / 255;
+        return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+      };
+      return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+    };
+    const backgroundOf = (element) => {
+      for (let node = element; node; node = node.parentElement) {
+        const style = getComputedStyle(node);
+        if (style.backgroundImage !== "none") return null;
+        const color = parseColor(style.backgroundColor);
+        if (color.a >= 0.99) return color;
+        if (color.a > 0) return null;
+      }
+      return { r: 255, g: 255, b: 255, a: 1 };
+    };
+    const problems = [];
+
+    if (!document.documentElement.getAttribute("lang")) problems.push("the <html> element has no lang attribute");
+
+    for (const element of document.querySelectorAll("body *")) {
+      const ownText = [...element.childNodes]
+        .filter((node) => node.nodeType === Node.TEXT_NODE)
+        .map((node) => node.textContent.trim())
+        .join("");
+      if (!ownText || !isShown(element)) continue;
+      const style = getComputedStyle(element);
+      const text = parseColor(style.color);
+      const background = backgroundOf(element);
+      if (!background || text.a < 0.99) continue;
+      const [light, dark] = [luminance(text), luminance(background)].sort((x, y) => y - x);
+      const ratio = (light + 0.05) / (dark + 0.05);
+      const size = parseFloat(style.fontSize);
+      const isLarge = size >= 24 || (size >= 18.66 && Number(style.fontWeight) >= 700);
+      const needed = isLarge ? 3 : 4.5;
+      if (ratio < needed) {
+        problems.push(
+          `text colour too close to its background (contrast ${ratio.toFixed(1)}:1, needs ${needed}:1): ${describe(element)}`,
+        );
+      }
+    }
+
+    for (const element of document.querySelectorAll("a, button")) {
+      if (!isShown(element)) continue;
+      const name =
+        element.textContent.trim() ||
+        element.getAttribute("aria-label") ||
+        element.getAttribute("title") ||
+        [...element.querySelectorAll("img")].map((image) => image.getAttribute("alt")).join("").trim();
+      if (!name) problems.push(`button or link has no name for screen readers: ${element.outerHTML.slice(0, 80)}`);
+      if (checkTapTargets) {
+        const rect = element.getBoundingClientRect();
+        const isInsideText = [...(element.parentElement?.childNodes ?? [])].some(
+          (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim(),
+        );
+        if (!isInsideText && (rect.width < 24 || rect.height < 24)) {
+          problems.push(
+            `button or link too small to tap (${Math.round(rect.width)}x${Math.round(rect.height)}px, needs 24x24): ${describe(element)}`,
+          );
+        }
+      }
+    }
+
+    for (const image of document.querySelectorAll("img")) {
+      if (isShown(image) && !image.hasAttribute("alt")) {
+        problems.push(`image has no alt text: ${describe(image)}`);
+      }
+    }
+    return problems;
+  }, checkTapTargets);
+
 if (!process.argv.includes("--no-build") || !existsSync(BUILD_DIR)) {
   console.log("screenshots: building the site...");
   if (!run("yarn", ["-s", "build"])) {
@@ -158,7 +258,7 @@ const origin = `http://127.0.0.1:${server.address().port}`;
 const browser = await launchBrowser();
 const problems = new Map();
 const report = (view, message) =>
-  problems.set(message, [...(problems.get(message) ?? []), view]);
+  problems.set(message, [...new Set([...(problems.get(message) ?? []), view])]);
 
 for (const viewport of VIEWPORTS) {
   for (const language of LANGUAGES) {
@@ -191,7 +291,14 @@ for (const viewport of VIEWPORTS) {
     for (const problem of await findLayoutProblems(page)) {
       report(label, problem);
     }
+    for (const problem of await findAccessibilityProblems(page, Boolean(viewport.checkTapTargets))) {
+      report(label, problem);
+    }
 
+    if (!viewport.saveImages) {
+      await page.close();
+      continue;
+    }
     const name = `${viewport.name}-${language.name}`;
     const file = join(OUT_DIR, `${name}.png`);
     await page.screenshot({ path: file, fullPage: true });
@@ -216,15 +323,36 @@ server.close();
 console.log(`\nscreenshots saved in ${OUT_DIR} (whole pages) and ${PARTS_DIR} (one screen each).`);
 console.log("Opening them is optional (see the verify skill: mind your context). Videos look empty on purpose.");
 
-if (problems.size > 0) {
-  console.error(`\nscreenshots: ${problems.size} problem(s) found`);
-  for (const [message, views] of [...problems].slice(0, 15)) {
+// The baseline lists problems the site already had, so an agent is only failed for problems it adds.
+// Numbers are masked so a new year, count, or size does not turn an old problem into a "new" one.
+// Each entry keeps its view, so an old problem on one screen size cannot hide a new one on another.
+const baselineKey = (view, message) => `${view}: ${message.replace(/\d+(\.\d+)?/g, "#")}`;
+if (process.argv.includes("--update-baseline")) {
+  const keys = [
+    ...new Set([...problems].flatMap(([message, views]) => views.map((view) => baselineKey(view, message)))),
+  ].sort();
+  writeFileSync(BASELINE_FILE, `${JSON.stringify(keys, null, 2)}\n`);
+  console.log(`\nscreenshots: baseline updated with ${keys.length} known problem(s).`);
+  process.exit(0);
+}
+const known = new Set(existsSync(BASELINE_FILE) ? JSON.parse(readFileSync(BASELINE_FILE, "utf8")) : []);
+const newProblems = [...problems]
+  .map(([message, views]) => [message, views.filter((view) => !known.has(baselineKey(view, message)))])
+  .filter(([, views]) => views.length > 0);
+const knownCount = [...problems].filter(([message, views]) =>
+  views.some((view) => known.has(baselineKey(view, message))),
+).length;
+if (knownCount > 0) {
+  console.log(`\n${knownCount} old problem(s) from before your change are listed in ${BASELINE_FILE}. Ignore them.`);
+}
+
+if (newProblems.length > 0) {
+  console.error(`\nscreenshots: ${newProblems.length} new problem(s) found`);
+  for (const [message, views] of newProblems.slice(0, 15)) {
     console.error(`  - ${message}  [${views.join(", ")}]`);
   }
-  if (problems.size > 15) console.error(`  ...and ${problems.size - 15} more. Fix these first.`);
+  if (newProblems.length > 15) console.error(`  ...and ${newProblems.length - 15} more. Fix these first.`);
   console.error("\nscreenshots: FAILED");
   process.exit(1);
 }
-console.log(
-  "\nscreenshots: PASSED (no console errors, missing files, sideways scrolling, cut-off text, broken images, or overlapping buttons)",
-);
+console.log("\nscreenshots: PASSED (no new page problems)");
