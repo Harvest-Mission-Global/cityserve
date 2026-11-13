@@ -99,6 +99,7 @@ const ReCap = forwardRef((props, ref) => {
           >
             {cardsData.map((card) => (
               <Box
+                key={card.title}
                 width={{ base: "9.813rem", lg: "11.95rem", xl: "13.75rem" }}
                 height={{ base: "8.188rem", lg: "10rem", xl: "11.5rem" }}
                 alignItems="center"

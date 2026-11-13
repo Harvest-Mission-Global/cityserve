@@ -68,7 +68,6 @@ const ParticipateSection = forwardRef((props, ref) => {
           fontFamily="'Manrope', sans-serif"
           textAlign={"center"}
           wordBreak="break-word"
-          fontColor="#183B5D"
         >
           {description}
         </Text>
