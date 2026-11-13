@@ -95,6 +95,6 @@ When you finish, every button of one form must agree: all open with the same lin
 
 Run the `verify` skill (`.agents/skills/verify/SKILL.md`). Also:
 
-- Click every form button you opened. It must open the right form in a new tab.
+- Run `rg -n "<the new form link>" src` and check the count matches the buttons in the table above. Ask the human to click each opened button once (list it under **Needs a human**).
 - Play the videos you changed.
 - In your report, list each changed fact with its old and new value.

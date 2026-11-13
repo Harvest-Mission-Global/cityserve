@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 const STEPS = [
   { name: "Lint (ESLint, zero warnings)", command: "yarn", args: ["-s", "lint"] },
   { name: "Content check (translations, images)", command: "node", args: ["scripts/check-content.mjs"] },
+  { name: "New-code check (your lines follow the standard)", command: "node", args: ["scripts/check-new-code.mjs"] },
   { name: "Smoke test (page renders in EN and 繁)", command: "yarn", args: ["-s", "test"] },
   { name: "Production build (same as Netlify)", command: "yarn", args: ["-s", "build"] },
 ];
