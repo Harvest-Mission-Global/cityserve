@@ -2,7 +2,7 @@
 // Holds new and changed lines in src/ to the AGENTS.md standard; old lines are left alone.
 // Usage: node scripts/check-new-code.mjs   (or: yarn check:new-code). BASE_REF overrides the branch it compares to.
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, realpathSync } from "node:fs";
 
 const RULES = [
   {
@@ -12,7 +12,7 @@ const RULES = [
   },
   {
     pattern: /fontFamily=\{?["'`][^"'`]*(Antonio|Manrope)/,
-    message: 'font name written by hand. Use fontFamily="heading" or "body", or <Heading>.',
+    message: 'font name written by hand. Use a theme text style: textStyle="sectionTitle", "body", or "label".',
   },
   {
     pattern: /target=\{?["'`]_blank/,
@@ -45,7 +45,16 @@ const RULES = [
 const git = (...args) =>
   execFileSync("git", args, { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
 
+const isProjectRepo = () => {
+  try {
+    return realpathSync(git("rev-parse", "--show-toplevel").trim()) === realpathSync(process.cwd());
+  } catch {
+    return false;
+  }
+};
+
 const findBase = () => {
+  if (!isProjectRepo()) return null;
   const candidates = [
     process.env.BASE_REF,
     "origin/development",
@@ -85,7 +94,7 @@ const addedLines = (base) => {
 
 const base = findBase();
 if (!base) {
-  console.log("check-new-code: skipped (no development or main branch to compare with)");
+  console.log("check-new-code: skipped (this folder is not its own repository, or it has no development or main branch)");
   process.exit(0);
 }
 

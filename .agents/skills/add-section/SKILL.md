@@ -39,7 +39,7 @@ faq: {
 Create `src/components/FaqSection.js`. Start from this template:
 
 ```javascript
-import { Container, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { forwardRef } from "react";
 import { useLanguage } from "./LanguageToggle";
 import translations from "./Translation";
@@ -51,33 +51,40 @@ const FaqSection = forwardRef((props, ref) => {
   const t = translations[language].faq;
 
   return (
-    <Container
-      ref={ref}
-      maxW="container.xl"
-      py={{ base: 10, lg: 16 }}
-      px={{ base: 4, md: 8, lg: 12, xl: 0 }}
-    >
-      <VStack alignItems="flex-start" spacing={4} color="brand.navy">
-        <Heading as="h2" fontSize={{ base: "3xl", md: "4xl" }}>
-          {t.title}
-        </Heading>
-        <Text fontSize={{ base: "sm", md: "xl" }}>{t.description}</Text>
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} w="100%">
-          {QUESTION_KEYS.map((key) => (
-            <Text key={key} bgColor="brand.lightBlue" p={4} borderRadius="lg">
-              {t[key]}
-            </Text>
-          ))}
-        </SimpleGrid>
-      </VStack>
-    </Container>
+    <Box as="section" ref={ref} w="100%" bgColor="white" color="brand.navy">
+      <Container
+        maxW="container.xl"
+        py={{ base: 10, lg: 16 }}
+        px={{ base: 4, md: 8, lg: 12, xl: 0 }}
+      >
+        <VStack alignItems="flex-start" spacing={4}>
+          <Text as="h2" textStyle="sectionTitle">
+            {t.title}
+          </Text>
+          <Text textStyle="body">{t.description}</Text>
+          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} w="100%">
+            {QUESTION_KEYS.map((key) => (
+              <Text
+                key={key}
+                textStyle="body"
+                bgColor="brand.lightBlue"
+                p={6}
+                borderRadius="button"
+              >
+                {t[key]}
+              </Text>
+            ))}
+          </SimpleGrid>
+        </VStack>
+      </Container>
+    </Box>
   );
 });
 
 export default FaqSection;
 ```
 
-The template shows the standard: theme colours (`brand.navy`), `Heading as="h2"` (theme font), the Chakra spacing scale, one responsive layout (`columns={{ base: 1, md: 3 }}`), and a list from data with a stable `key`.
+The template shows the standard: a full-width section with a theme background, theme text styles (`textStyle="sectionTitle"`, `"body"`), the Chakra spacing scale, `borderRadius="button"`, one responsive layout (`columns={{ base: 1, md: 3 }}`), and a list from data with a stable `key`. Read `.agents/skills/design/SKILL.md` before choosing the background and layout.
 
 - Keep `forwardRef` only if the header will scroll to this section. Otherwise use a plain arrow function and remove `ref`.
 - Use only the colours and fonts in `AGENTS.md` → `#styling-standard`.
