@@ -22,7 +22,7 @@ Read the root `AGENTS.md` and follow its "Do this BEFORE you plan, propose, or a
 - Change `scripts/`, `src/App.test.js`, `package.json`, `yarn.lock`, `netlify.toml`, or the ESLint config to make a check pass.
 - Add a dependency, a router, a server, TypeScript, or a CSS framework.
 - Commit on, or push to, `main` or `development`.
-- Say a change works when you did not run `yarn verify` and look at the page.
+- Say a change works when you did not run `yarn verify` and `yarn screenshots`.
 
 ## Report format
 
@@ -34,8 +34,8 @@ SUMMARY
 
 VERIFY REPORT
 - yarn verify: PASSED / FAILED (<first error>)
-- yarn screenshots: PASSED / FAILED (<first problem>); parts I looked at: <file names>
-- Browser check: done / NOT done (reason)
-- Checked: desktop EN, desktop 繁, mobile EN, mobile 繁
+- yarn screenshots: PASSED / FAILED (<first problem>)
+- Images I opened: <file names, or "none">
+- Browser check: done / skipped
 - Needs a human: <anything unsure, or "nothing">
 ```

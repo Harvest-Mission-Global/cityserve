@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Check that a change in cityserve is really done - run yarn verify and yarn screenshots, then look at the page on desktop and mobile in English and Traditional Chinese. Use at the end of every task, before you commit, and whenever you want to say "done".
+description: Check that a change in cityserve is really done - run yarn verify and yarn screenshots (text-only page checks on desktop and mobile in English and Traditional Chinese). Use at the end of every task, before you commit, and whenever you want to say "done".
 ---
 
 # verify
@@ -33,22 +33,43 @@ Never change `scripts/`, `src/App.test.js`, `package.json`, or the ESLint config
 
 After three failed tries, stop and report the full error to the human.
 
-## 2. Take screenshots
+## 2. Run the page checks
 
 ```bash
 yarn screenshots
 ```
 
-It builds the site, opens it in Chrome at desktop (1440px) and mobile (390px) width, in English and 繁, and saves:
+It builds the site and opens it in a hidden Chrome at desktop (1440px) and mobile (390px) width, in English and 繁. It checks the page **in code** and prints only text:
 
-- `screenshots/<desktop|mobile>-<en|zh>.png`: the whole page.
-- `screenshots/parts/<desktop|mobile>-<en|zh>-NN.png`: one screen at a time. **Open the parts that show what you changed** and look at them. Whole-page images are too small to read.
+| Problem it finds | Example line |
+| --- | --- |
+| Console error or crash | `console error: ...  [mobile zh]` |
+| Missing file | `404 for /images/logo.png  [desktop en, ...]` |
+| Page scrolls sideways | `page scrolls sideways; too wide: <div> 600px wide ("...")` |
+| Text cut off or spilling out of its box | `text does not fit its box: <p> "..."` |
+| Image that did not load | `image did not load: <img> "..."` |
+| Buttons or links on top of each other | `buttons or links overlap: <a> "..." and <button> "..."` |
 
-It fails on console errors, missing files (404), and sideways scrolling, and prints which element is too wide. Videos look empty on purpose: the script blocks outside websites.
+The last line must be `screenshots: PASSED`. If not, fix the first problem and run it again. The text in quotes tells you which element to search for: `rg -n "<that text>" src`.
 
-Fix every problem it prints, then run it again until it prints `screenshots: PASSED`.
+**The text result is the required check.** The script also saves PNG files you **may** open to check your work yourself. This is optional: a human checks the final screenshots on the PR anyway (CI attaches them).
 
-## 3. Look at the page yourself (if you can open a browser)
+| File | What it shows |
+| --- | --- |
+| `screenshots/parts/<desktop\|mobile>-<en\|zh>-NN.png` | One screen, top of the page first (`01`). **Open these.** |
+| `screenshots/<desktop\|mobile>-<en\|zh>.png` | The whole page. Too small to read; do not open. |
+
+**Watch your context before you open images.** Each image costs about 500 (mobile) to 2,000 (desktop) tokens, about the same as a long file. Skip the images, and say so in your report, when:
+
+- your model cannot read images,
+- your context window is small (32k tokens or less), or this conversation is already long (more than about half of your context is used), or
+- the change is only text, links, or numbers. The text checks already cover these.
+
+When you do open images: start with the mobile parts (they are cheaper and break first), open only the parts that show what you changed, and stop at about four images.
+
+## 3. Optional: look at the page in a real browser
+
+Step 2 already checks the page. Skip this step unless a human sits with you and can look, or the human asked for it. Browser tools that send page snapshots to you use a lot of context.
 
 Start the dev server in the background (it never exits by itself):
 
@@ -73,7 +94,7 @@ For each one, check:
 - Links and buttons go to the right place.
 - The browser console has no red errors.
 
-If you cannot open a browser, the screenshots from step 2 are your check. Say in your report which parts you opened and what you saw. Clicking links is still a human check; list it under **Needs a human**. Do not say "looks good" if you did not look.
+Clicking links and buttons is a human check unless you did it here; list it under **Needs a human**. Never say "looks good" about something you did not check.
 
 ## 4. Report
 
@@ -82,9 +103,9 @@ End your reply with this block, filled in truthfully:
 ```
 VERIFY REPORT
 - yarn verify: PASSED / FAILED (<first error>)
-- yarn screenshots: PASSED / FAILED (<first problem>); parts I looked at: <file names>
-- Browser check: done / NOT done (reason)
-- Checked: desktop EN, desktop 繁, mobile EN, mobile 繁
+- yarn screenshots: PASSED / FAILED (<first problem>)
+- Images I opened: <file names, or "none">
+- Browser check: done / skipped
 - Files changed: <list>
 - Needs a human: <anything unsure, or "nothing">
 ```
