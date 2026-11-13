@@ -80,7 +80,7 @@ Before you use a Chakra component or prop that this repo does not already use, l
 yarn install          # first time only
 yarn start            # dev server on http://localhost:3000 — it never exits; run it in the background
 yarn verify           # THE check: lint + content + new-code + smoke test + production build
-yarn screenshots      # builds, then saves desktop/mobile × EN/繁 screenshots to screenshots/
+yarn screenshots      # checks the built page in Chrome (desktop/mobile × EN/繁); prints problems as text
 yarn lint             # ESLint only, zero warnings allowed
 yarn check:content    # translation keys, Traditional Chinese, image paths
 yarn check:new-code   # your new and changed lines follow #code-standard and #styling-standard
@@ -92,7 +92,7 @@ yarn build            # production build only, into build/
 
 `yarn check:new-code` only looks at lines that differ from `development`. Old lines are never reported. If it reports a line you changed, bring that line up to the standard; do not undo the change you were asked to make.
 
-`yarn screenshots` needs Google Chrome. Without Chrome, run `yarn playwright install chromium` once. It also fails on console errors, missing files, and sideways scrolling.
+`yarn screenshots` needs Google Chrome. Without Chrome, run `yarn playwright install chromium` once. It fails on console errors, missing files, sideways scrolling, cut-off text, broken images, and overlapping buttons, and reports them as text. It also saves PNG files that you may open to check your work, if your context allows (see the `verify` skill).
 
 ## Files
 
