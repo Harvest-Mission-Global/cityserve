@@ -65,19 +65,34 @@ This repo is its **one-page, bilingual (English / 繁體中文) marketing websit
 
 Check `package.json` for exact versions before you use an API.
 
+## Looking Up Docs
+
+This repo uses **Chakra UI v2**. Most examples on the internet, and in your memory, are Chakra v3, which has different APIs. Never use v3 names such as `colorPalette`, `asChild`, `Card.Root`, `Field.Root`, `createSystem`, `defineConfig`, or `<Provider>`.
+
+Before you use a Chakra component or prop that this repo does not already use, look it up:
+
+- **With the Context7 tool** (set up for OpenCode, Codex, and Claude Code in this repo): call `query-docs` with `libraryId` = `/chakra-ui/chakra-ui/__branch__v2` and a short question, for example "SimpleGrid responsive columns". You do not need `resolve-library-id`.
+- **Without Context7:** read <https://v2.chakra-ui.com/docs>.
+
 ## Commands
 
 ```bash
 yarn install          # first time only
 yarn start            # dev server on http://localhost:3000 — it never exits; run it in the background
-yarn verify           # THE check: lint + content check + smoke test + production build
+yarn verify           # THE check: lint + content + new-code + smoke test + production build
+yarn screenshots      # builds, then saves desktop/mobile × EN/繁 screenshots to screenshots/
 yarn lint             # ESLint only, zero warnings allowed
 yarn check:content    # translation keys, Traditional Chinese, image paths
+yarn check:new-code   # your new and changed lines follow #code-standard and #styling-standard
 yarn test             # smoke test only (runs once, then exits)
 yarn build            # production build only, into build/
 ```
 
-`yarn install` also turns on a git pre-commit hook (`.githooks/pre-commit`). It blocks commits on `main` and `development`, and it runs lint and the content check.
+`yarn install` also turns on a git pre-commit hook (`.githooks/pre-commit`). It blocks commits on `main` and `development`, and it runs lint, the content check, and the new-code check.
+
+`yarn check:new-code` only looks at lines that differ from `development`. Old lines are never reported. If it reports a line you changed, bring that line up to the standard; do not undo the change you were asked to make.
+
+`yarn screenshots` needs Google Chrome. Without Chrome, run `yarn playwright install chromium` once. It also fails on console errors, missing files, and sideways scrolling.
 
 ## Files
 
@@ -185,7 +200,7 @@ This applies to new code and to the lines you change.
 ## Content Rules
 
 - Images: `src={process.env.PUBLIC_URL + "/images/<file>"}`, with an `alt` text that says what the image shows (`alt=""` only for decoration).
-- External links: `<Link href="..." isExternal>`, or `<Button as={Link} href="..." isExternal>`. `isExternal` opens a new tab safely (`target="_blank"` plus `rel="noopener noreferrer"`). Old code uses `target="_blank"` alone; upgrade it only on lines you change.
+- External links: `<Link href="..." isExternal>`, or `<Button as={Link} href="..." isExternal>`. `isExternal` opens a new tab safely (`target="_blank"` plus `rel="noopener"`). Old code uses `target="_blank"` alone; upgrade it only on lines you change.
 - Use `<Button>` for actions and `<Link>` for going to another page or site.
 - This is a public website. Never add names, phone numbers, emails, or photos of private people unless the issue gives them and says they are approved.
 
@@ -215,6 +230,8 @@ Agents:
 
 Skills (also OpenCode commands): `verify`, `edit-text`, `event-update`, `add-image`, `add-section`, `gh-execute`, `code-review` (OpenCode command: `/review`).
 
-Guards that work in every tool: the pre-commit hook, `yarn verify`, and the `verify` GitHub Action on every PR. `opencode.json` also makes OpenCode ask before `git push` and `yarn add`, and blocks `npm` and `npx`.
+Guards that work in every tool: the pre-commit hook, `yarn verify`, and the `verify` GitHub Action on every PR (it also uploads the screenshots). `opencode.json` also makes OpenCode ask before `git push` and `yarn add`, and blocks `npm` and `npx`.
+
+MCP servers: Context7 (docs lookup) is set up in `opencode.json`, `.codex/config.toml`, and `.mcp.json`. Codex loads `.codex/config.toml` only after you trust the project; Claude Code asks you to approve `.mcp.json` once.
 
 To add a new skill: create `.agents/skills/<name>/SKILL.md` with `name` and `description` front matter, add a row to the Task Router, and add `.opencode/commands/<name>.md` (copy an existing one).
