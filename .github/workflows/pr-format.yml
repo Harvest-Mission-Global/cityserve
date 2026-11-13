@@ -1,0 +1,25 @@
+name: pr-format
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  pr-format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title and issue link
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          failed=0
+          if ! printf '%s' "$TITLE" | grep -Eq '^GH-[0-9]+: .+'; then
+            echo "::error::PR title must look like 'GH-<issue#>: <what the branch does>'. See .agents/docs/git-workflow.md"
+            failed=1
+          fi
+          if ! printf '%s' "$BODY" | grep -Eiq '(closes|fixes|implements|part of) #[0-9]+'; then
+            echo "::error::PR description must link the issue, for example 'Closes #32'. See .agents/docs/git-workflow.md"
+            failed=1
+          fi
+          exit $failed
