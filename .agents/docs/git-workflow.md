@@ -60,7 +60,7 @@ Delete `pr-body.md` after the PR is open. Do not commit it.
 - **Title:** same shape as a commit: `GH-<issue#>: <what the whole branch does>`.
 - **Body:** use the template below. Delete a section that does not apply; do not write "N/A".
 - **No file paths or line numbers in the text.** GitHub already shows them.
-- **Screenshots:** desktop and mobile, English and 繁體中文, for every visible change.
+- **Screenshots:** desktop and mobile, English and 繁體中文, for every visible change. `yarn screenshots` saves them in `screenshots/parts/`; the `verify` GitHub Action also uploads them to the PR's run.
 - **No personal data** in the body or screenshots.
 
 ```markdown
@@ -84,6 +84,7 @@ Closes #<issue#>
 ## Verification
 
 - [ ] `yarn verify` prints `VERIFY PASSED`
+- [ ] `yarn screenshots` prints `screenshots: PASSED`
 - [ ] Checked desktop (1440px) and mobile (390px)
 - [ ] Checked English and 繁體中文
 

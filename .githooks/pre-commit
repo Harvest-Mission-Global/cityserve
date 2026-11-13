@@ -17,3 +17,8 @@ node scripts/check-content.mjs || {
   echo "pre-commit: content check failed. Fix the problems above, then commit again."
   exit 1
 }
+
+node scripts/check-new-code.mjs || {
+  echo "pre-commit: new-code check failed. Fix the lines above, then commit again."
+  exit 1
+}
