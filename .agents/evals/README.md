@@ -38,6 +38,7 @@ node .agents/evals/run.mjs setup open-interest-form
 
 | Task | What it tests |
 | --- | --- |
+| `annual-update` | The most common job: a yearly update from an event brief (dates, years, recap numbers, a renamed label), in both languages |
 | `footer-and-partner` | Several small edits in one issue; a partner added to both the desktop and mobile lists |
 | `open-interest-form` | Opening a form in every place (5 buttons), leaving another form closed, Chinese text |
 | `add-faq-section` | A new section that follows the code and design standards |
