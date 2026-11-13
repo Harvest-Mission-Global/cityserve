@@ -1,5 +1,5 @@
 ---
-description: Frontend developer for the CityServe one-page site - text and translation changes, yearly event updates, images and partner logos, new sections, layout fixes. Use for any change to src/ or public/.
+description: Senior frontend developer for the CityServe one-page site - text and translation changes, yearly event updates, images and partner logos, new sections, layout fixes. Use for any change to src/ or public/.
 mode: subagent
 permission:
   bash:
