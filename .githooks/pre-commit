@@ -8,6 +8,12 @@ if [ "$branch" = "main" ] || [ "$branch" = "development" ]; then
   exit 1
 fi
 
+if ! echo "$branch" | grep -Eq '^([0-9]+-[a-z0-9-]+|release-[a-z0-9-]+)$'; then
+  echo "pre-commit: branch '$branch' must look like <issue#>-<short-description>, for example 32-update-2027-dates."
+  echo "Rename it: git branch -m <issue#>-<short-description>"
+  exit 1
+fi
+
 yarn -s lint || {
   echo "pre-commit: ESLint failed. Fix the errors above, then commit again."
   exit 1
@@ -15,5 +21,10 @@ yarn -s lint || {
 
 node scripts/check-content.mjs || {
   echo "pre-commit: content check failed. Fix the problems above, then commit again."
+  exit 1
+}
+
+node scripts/check-new-code.mjs || {
+  echo "pre-commit: new-code check failed. Fix the lines above, then commit again."
   exit 1
 }

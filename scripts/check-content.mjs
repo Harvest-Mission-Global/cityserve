@@ -12,8 +12,18 @@ const TRANSLATION_FILE = join(SRC, "components", "Translation.js");
 const LANGUAGES = ["en", "zh"];
 // The site is Hong Kong Traditional Chinese (繁); these characters only exist in Simplified Chinese.
 const SIMPLIFIED_ONLY = /[该关闭这们为发会对时说过还进动报门问种东车书长开见让认识请谢爱国务业电话与网络经济学习区图举灵传币义儿亲员]/g;
+// Valid Traditional characters, but mainland word choices; Hong Kong readers expect the second word.
+const HK_WORDS = [
+  ["伙伴", "夥伴"],
+  ["視頻", "影片"],
+  ["信息", "資訊"],
+  ["質量", "質素"],
+  ["屏幕", "螢幕"],
+  ["默認", "預設"],
+];
 
 const errors = [];
+const warnings = [];
 const fail = (message) => errors.push(message);
 
 const listJsFiles = (dir) =>
@@ -77,6 +87,11 @@ if (translations) {
       fail(
         `Translation key "zh.${key}" uses Simplified Chinese (${[...new Set(simplified)].join(" ")}). Use Traditional Chinese (繁體) characters.`,
       );
+    }
+    for (const [mainland, hongKong] of HK_WORDS) {
+      if (typeof value === "string" && value.includes(mainland)) {
+        warnings.push(`"zh.${key}" uses ${mainland}; Hong Kong readers write ${hongKong}.`);
+      }
     }
   }
 
@@ -150,6 +165,12 @@ for (const file of listJsFiles(SRC)) {
       );
     }
   }
+}
+
+if (warnings.length > 0) {
+  console.log(`check-content: ${warnings.length} wording warning(s), not failures:`);
+  for (const warning of warnings) console.log(`  - ${warning}`);
+  console.log("  Change these words only in text you are editing for this task.\n");
 }
 
 if (errors.length > 0) {

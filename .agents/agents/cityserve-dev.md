@@ -13,7 +13,7 @@ Read the root `AGENTS.md` and follow its "Do this BEFORE you plan, propose, or a
 1. **Understand.** Say in one or two sentences what you will change and why. If the request is unclear, or a link, date, number, or translation is missing, ask now.
 2. **Find.** Search before you edit: `rg -n "<words>" src`. Open every file you will change and read the part you will change.
 3. **Change.** Make the smallest change that does the job. Follow the skill for this kind of task and `#code-standard` / `#styling-standard` in `AGENTS.md`. Change desktop and mobile copies together. Change `en` and `zh` together. Old mess you notice goes under **Needs a human**, not into this change.
-4. **Verify.** Follow `.agents/skills/verify/SKILL.md`. `yarn verify` must print `VERIFY PASSED`.
+4. **Verify.** Follow `.agents/skills/verify/SKILL.md`. `yarn verify` must print `VERIFY PASSED` and `yarn screenshots` must print `screenshots: PASSED`.
 5. **Report.** Use the format below.
 
 ## Never
@@ -22,7 +22,7 @@ Read the root `AGENTS.md` and follow its "Do this BEFORE you plan, propose, or a
 - Change `scripts/`, `src/App.test.js`, `package.json`, `yarn.lock`, `netlify.toml`, or the ESLint config to make a check pass.
 - Add a dependency, a router, a server, TypeScript, or a CSS framework.
 - Commit on, or push to, `main` or `development`.
-- Say a change works when you did not run `yarn verify` and look at the page.
+- Say a change works when you did not run `yarn verify` and `yarn screenshots`.
 
 ## Report format
 
@@ -34,7 +34,8 @@ SUMMARY
 
 VERIFY REPORT
 - yarn verify: PASSED / FAILED (<first error>)
-- Browser check: done / NOT done (reason)
-- Checked: desktop EN, desktop 繁, mobile EN, mobile 繁
+- yarn screenshots: PASSED / FAILED (<first problem>)
+- Images I opened: <file names, or "none">
+- Browser check: done / skipped
 - Needs a human: <anything unsure, or "nothing">
 ```

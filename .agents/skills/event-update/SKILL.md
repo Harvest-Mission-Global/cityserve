@@ -27,6 +27,11 @@ rg -n "forms.gle|tithe.ly|youtube.com|mailto:" src
 rg -n "isDisabled" src
 ```
 
+The `rg` output already shows each line and its file. **Open only the files you will change**, not every file in the table below.
+
+- Dates, years, recap text, and recap numbers: only `Translation.js` and `ReCap.js`.
+- Videos, form buttons, or the footer: also the file named in the table, and only if the issue asks for that change.
+
 Write the list of hits in your reply before you change anything. Here is what you will usually find:
 
 | What | Where |
@@ -95,6 +100,6 @@ When you finish, every button of one form must agree: all open with the same lin
 
 Run the `verify` skill (`.agents/skills/verify/SKILL.md`). Also:
 
-- Click every form button you opened. It must open the right form in a new tab.
+- Run `rg -n "<the new form link>" src` and check the count matches the buttons in the table above. Ask the human to click each opened button once (list it under **Needs a human**).
 - Play the videos you changed.
 - In your report, list each changed fact with its old and new value.

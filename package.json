@@ -28,7 +28,9 @@
     "test": "react-scripts test --watchAll=false",
     "lint": "eslint src --max-warnings=0",
     "check:content": "node scripts/check-content.mjs",
+    "check:new-code": "node scripts/check-new-code.mjs",
     "verify": "node scripts/verify.mjs",
+    "screenshots": "node scripts/screenshots.mjs",
     "prepare": "node scripts/install-hooks.mjs",
     "eject": "react-scripts eject"
   },
@@ -49,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "playwright": "1.59.1"
   }
 }

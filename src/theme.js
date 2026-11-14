@@ -19,6 +19,32 @@ const theme = extendTheme({
 		heading: `'Antonio', sans-serif`,
 		body: `'Manrope', sans-serif`,
 	},
+	radii: {
+		button: '0.625rem',
+	},
+	letterSpacings: {
+		label: '0.12rem',
+	},
+	textStyles: {
+		sectionTitle: {
+			fontFamily: 'heading',
+			fontWeight: 700,
+			fontSize: { base: '1.75rem', md: '2.25rem' },
+			textTransform: 'uppercase',
+		},
+		body: {
+			fontFamily: 'body',
+			fontWeight: 400,
+			fontSize: { base: '0.875rem', md: '1.25rem' },
+		},
+		label: {
+			fontFamily: 'body',
+			fontWeight: 800,
+			fontSize: { base: '0.8rem', lg: '1rem' },
+			letterSpacing: 'label',
+			textTransform: 'uppercase',
+		},
+	},
 });
 
 export default theme;

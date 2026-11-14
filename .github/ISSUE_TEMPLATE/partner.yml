@@ -1,0 +1,33 @@
+name: Partner change
+description: Add, remove, or rename a partner, or replace a partner logo.
+title: "[Partner] "
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: action
+    attributes:
+      label: What to do
+      options:
+        - Add a partner
+        - Remove a partner
+        - Rename a partner
+        - Replace a logo
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Partner name, exactly as it should appear
+      placeholder: HOPE CHURCH
+    validations:
+      required: true
+  - type: textarea
+    id: logo
+    attributes:
+      label: Logo file
+      description: Drag the logo file here. PNG or SVG, under 300 KB, about 400px wide. Only logos the partner allowed us to use.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: For example, where in the list it should go.

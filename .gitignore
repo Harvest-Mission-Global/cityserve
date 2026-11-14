@@ -22,5 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# AI agent worktrees
+# AI agent worktrees and screenshots
 .claude/worktrees/
+/screenshots

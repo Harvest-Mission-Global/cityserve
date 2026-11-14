@@ -4,7 +4,8 @@ Every change is linked to a GitHub issue number. No issue yet? Ask the human for
 
 ## Branches
 
-- `development` is the working branch. Start from it and open PRs into it.
+- `development` is the working branch. Start from it and open PRs into it, unless the human names another branch: then start from that one.
+- Before you start, check that `scripts/verify.mjs` exists on your branch. If it does not, stop and ask (see the `verify` skill).
 - `main` is the old release branch. Do not touch it unless the human asks.
 - **Never commit on, push to, or force-push `main` or `development`.** A push there can update the live website.
 - New branch name: `<issue#>-<short-description>`, lowercase, words joined with `-`.
@@ -58,9 +59,10 @@ gh pr create --base development --title "GH-42: Update event details for 2027" -
 Delete `pr-body.md` after the PR is open. Do not commit it.
 
 - **Title:** same shape as a commit: `GH-<issue#>: <what the whole branch does>`.
+- **First line of the body:** `Closes #<issue#>`, or `Part of #<issue#>` when the issue needs more PRs. The `pr-format` check fails without it.
 - **Body:** use the template below. Delete a section that does not apply; do not write "N/A".
 - **No file paths or line numbers in the text.** GitHub already shows them.
-- **Screenshots:** desktop and mobile, English and 繁體中文, for every visible change.
+- **Screenshots:** desktop and mobile, English and 繁體中文, for every visible change. `yarn screenshots` saves them in `screenshots/parts/`; the `verify` GitHub Action also uploads them to the PR's run.
 - **No personal data** in the body or screenshots.
 
 ```markdown
@@ -84,6 +86,7 @@ Closes #<issue#>
 ## Verification
 
 - [ ] `yarn verify` prints `VERIFY PASSED`
+- [ ] `yarn screenshots` prints `screenshots: PASSED`
 - [ ] Checked desktop (1440px) and mobile (390px)
 - [ ] Checked English and 繁體中文
 

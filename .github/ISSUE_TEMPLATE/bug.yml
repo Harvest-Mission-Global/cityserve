@@ -1,0 +1,42 @@
+name: Something looks wrong
+description: Layout broken, text wrong, link not working, image missing.
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: What you see, and what you expected to see.
+    validations:
+      required: true
+  - type: dropdown
+    id: section
+    attributes:
+      label: Where on the page
+      options:
+        - Header (top bar)
+        - About (first section)
+        - Social needs
+        - Join us
+        - Recap
+        - How to take part
+        - Partners
+        - Footer
+        - Not sure
+    validations:
+      required: true
+  - type: checkboxes
+    id: devices
+    attributes:
+      label: Where it happens
+      options:
+        - label: Phone
+        - label: Computer
+        - label: English
+        - label: 繁體中文
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: Drag a screenshot here. Please hide any personal information.

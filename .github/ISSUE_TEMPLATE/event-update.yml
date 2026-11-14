@@ -1,0 +1,57 @@
+name: Event update
+description: New dates, open or close a form, new form link, recap numbers, or a new video.
+title: "[Event] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill in only what changes. Leave the rest empty. AI agents use these answers word for word, so copy links and numbers exactly.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What should change
+      description: One line per change.
+      placeholder: |
+        Open the interest form
+        Update the event dates to 2027
+    validations:
+      required: true
+  - type: input
+    id: dates-en
+    attributes:
+      label: Event dates (English)
+      placeholder: MARCH 19-21, 2027
+  - type: input
+    id: dates-zh
+    attributes:
+      label: Event dates (繁體中文)
+      placeholder: 2027年 3月19-21日
+  - type: textarea
+    id: forms
+    attributes:
+      label: Forms to open or close
+      description: For each form, say open or closed, the link, and the button text in English and 繁體中文.
+      placeholder: |
+        Interest form: OPEN, https://forms.gle/..., "2027 INTEREST FORM" / "CityServe 2027 意向表格"
+        Church form: CLOSED
+  - type: textarea
+    id: recap
+    attributes:
+      label: Recap numbers
+      placeholder: |
+        Participants: 480
+        Churches: 31
+        NGOs: 22
+        People reached: 814
+  - type: textarea
+    id: videos
+    attributes:
+      label: Video links (YouTube)
+      placeholder: |
+        Recap video: https://www.youtube.com/watch?v=...
+        Promo video: https://www.youtube.com/watch?v=...
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
