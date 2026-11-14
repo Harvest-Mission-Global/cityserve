@@ -42,6 +42,14 @@ If no row matches, read `#golden-rules`, `#working-in-a-messy-codebase`, and `#c
 10. **Do not guess links, dates, or numbers.** Form links, giving links, YouTube links, event dates, and recap numbers come from the human or the issue. If you do not have them, stop and ask.
 11. **When you are not sure, stop and ask.** A short question is better than a wrong change.
 
+## Request Budget
+
+Many contributors use free or local models with a daily request limit. Every tool call is a request.
+
+- Do not open a file you will not change. Use `rg -n` results instead.
+- Do not guess and retry: one attempt at reading an issue or attachment, then ask.
+- For text and content tasks, run `yarn verify` and `yarn screenshots` **once**, after all edits. For code tasks, run them after each task.
+
 ## Smallest Complete Change
 
 Before you write code, take the first answer that fully works:
@@ -225,6 +233,7 @@ This applies to new code and to the lines you change.
 - The task needs a new dependency, a new page or route, a server, or a change to `netlify.toml`.
 - The task would delete a section or a partner.
 - `yarn verify` still fails after three tries.
+- You are not allowed to edit files (for example OpenCode's Plan mode). Tell the human to switch to a mode that can edit (in OpenCode: press `Tab` for **Build**). Do not start a sub-agent to get around it.
 
 ## Tools: where each agent finds things
 

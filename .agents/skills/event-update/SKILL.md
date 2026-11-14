@@ -27,6 +27,11 @@ rg -n "forms.gle|tithe.ly|youtube.com|mailto:" src
 rg -n "isDisabled" src
 ```
 
+The `rg` output already shows each line and its file. **Open only the files you will change**, not every file in the table below.
+
+- Dates, years, recap text, and recap numbers: only `Translation.js` and `ReCap.js`.
+- Videos, form buttons, or the footer: also the file named in the table, and only if the issue asks for that change.
+
 Write the list of hits in your reply before you change anything. Here is what you will usually find:
 
 | What | Where |
