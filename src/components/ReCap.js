@@ -18,23 +18,23 @@ const ReCap = forwardRef((props, ref) => {
   const cardsData = [
     {
       title: translations[language].recap.participants,
-      number: "480",
+      number: "337",
       backgroundImage:
         process.env.PUBLIC_URL + "images/recap_participants_card.png",
     },
     {
       title: translations[language].recap.churches,
-      number: "31",
+      number: "14",
       backgroundImage: process.env.PUBLIC_URL + "images/recap_church_card.png",
     },
     {
       title: translations[language].recap.ngos,
-      number: "22",
+      number: "15",
       backgroundImage: process.env.PUBLIC_URL + "images/recap_ngo_card.png",
     },
     {
       title: translations[language].recap.peopleReached,
-      number: "814",
+      number: "707",
       backgroundImage: process.env.PUBLIC_URL + "images/recap_reached_card.png",
     },
   ];
