@@ -55,7 +55,7 @@ const translations = {
       peopleReached: "PEOPLE REACHED",
     },
     participate: {
-      howTo: "How can YOU take part in CityServe this year?",
+      howTo: "How can YOU take part in the coming CityServe?",
       avenues:
         "Whether you’re a church, an NGO, or charity, we have various avenues to have you take part in CityServe.",
       forIndividuals: "FOR INDIVIDUALS",
@@ -110,7 +110,7 @@ const translations = {
       description_2:
         "CityServe 的願景是啟動一個轉變城市的運動，旨在每年在指定的週末連接教會和當地慈善組織機構。我們的目標是將服務作為我們崇拜的表達。我們的使命是透過實際行動關愛和服務香港的貧困、邊緣化及未接觸的個體，見證上帝的愛。通過我們的共同努力，我們希望激勵城市注意到我們的服務行動，並傳揚好消息，培養根植於同情和希望的社區。",
       interestForm: "CityServe 2026 意向表格",
-      recap: "看看2026年 CityServe 的回顧影片",
+      recap: "看看2026年 CityServe 的回顧",
     },
     socialNeed: {
       title: "服務香港的社會需求",
@@ -144,7 +144,7 @@ const translations = {
       peopleReached: "服務對象",
     },
     participate: {
-      howTo: "你能如何參與今年的CityServe?",
+      howTo: "你能如何參與下一次的 CityServe?",
       avenues:
         "無論您是教會、非政府組織還是慈善機構，我們都有多種途徑讓您參與CityServe。",
       forIndividuals: "個人",
