@@ -93,8 +93,8 @@ const translations = {
       recap: "2026 回顧",
       participate: "參與",
     },
-    interestForm: "该表格已关闭",
-    church_interestForm: "该表格已关闭",
+    interestForm: "該表格已關閉",
+    church_interestForm: "該表格已關閉",
     about: {
       date: "2027年 3月12-14日",
       mission_1: "以",
@@ -130,7 +130,7 @@ const translations = {
       title: "一同參與CityServe 2027",
       description:
         "如果您想參加 CityServe 2027 或有任何疑問，請在下面的表格中報名或聯絡我們.",
-      button_registration: "该表格已关闭",
+      button_registration: "該表格已關閉",
       button_giving: "CityServe 奉獻",
       link: "admin@cityserve.hk",
     },

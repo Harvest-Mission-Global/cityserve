@@ -1,4 +1,4 @@
-# Cityserve website
+# CityServe website
 
 To run the website locally make sure you have `yarn` installed.
 

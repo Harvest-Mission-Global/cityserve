@@ -37,7 +37,7 @@ const Footer = () => {
             fontFamily="'Manrope', sans-serif"
             fontWeight="400"
           >
-            © 2023-2025 Cityserve Hong Kong. All Rights Reserved.
+            © 2023-{new Date().getFullYear()} CityServe Hong Kong. All Rights Reserved.
           </Text>
           <Box
             display={"flex"}
